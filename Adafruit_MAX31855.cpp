@@ -42,6 +42,9 @@
 
 #include <stdlib.h>
 
+Adafruit_MAX31855::Adafruit_MAX31855()
+    : spi_dev(0, 0, 0, 0, 0) {}
+
 /**************************************************************************/
 /*!
     @brief  Instantiates a new Adafruit_MAX31855 class using software SPI.
