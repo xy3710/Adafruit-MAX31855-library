@@ -189,6 +189,8 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
   uint32_t d = 0;
   uint8_t buf[4];
 
+  Serial.println(initialized);
+    
   // backcompatibility!
   if (!initialized) {
     begin();
@@ -204,7 +206,7 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
   d <<= 8;
   d |= buf[3];
 
-  // Serial.println(d, HEX);
+  Serial.println(d, HEX);
 
   return d;
 }
