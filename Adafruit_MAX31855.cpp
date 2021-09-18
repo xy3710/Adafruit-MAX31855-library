@@ -90,7 +90,7 @@ bool Adafruit_MAX31855::begin(void) {
 /**************************************************************************/
 double Adafruit_MAX31855::readInternal(void) {
   uint32_t v;
-
+  
   v = spiread32();
 
   // ignore bottom 4 bits - they're just thermocouple data
@@ -120,6 +120,8 @@ double Adafruit_MAX31855::readCelsius(void) {
 
   int32_t v;
 
+  Serial.println(v);  
+    
   v = spiread32();
 
   // Serial.print("0x"); Serial.println(v, HEX);
