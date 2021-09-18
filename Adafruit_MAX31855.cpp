@@ -66,8 +66,7 @@ Adafruit_MAX31855::Adafruit_MAX31855(int8_t _sclk, int8_t _cs, int8_t _miso)
 */
 /**************************************************************************/
 Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs, SPIClass *_spi)
-    : spi_dev(_cs, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, _spi) {
-    Serial.println(_cs);}
+    : spi_dev(_cs, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, _spi) {}
 
 /**************************************************************************/
 /*!
@@ -123,7 +122,7 @@ double Adafruit_MAX31855::readCelsius(void) {
     
   v = spiread32();
 
-  Serial.print("0x"); Serial.println(v, HEX);
+  //Serial.print("0x"); Serial.println(v, HEX);
 
   /*
   float internal = (v >> 4) & 0x7FF;
@@ -188,8 +187,6 @@ double Adafruit_MAX31855::readFahrenheit(void) {
 uint32_t Adafruit_MAX31855::spiread32(void) {
   uint32_t d = 0;
   uint8_t buf[4];
-
-  Serial.println(initialized);
     
   // backcompatibility!
   if (!initialized) {
@@ -206,7 +203,7 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
   d <<= 8;
   d |= buf[3];
 
-  Serial.println(d, HEX);
+  //Serial.println(d, HEX);
 
   return d;
 }
