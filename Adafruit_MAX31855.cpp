@@ -120,8 +120,6 @@ double Adafruit_MAX31855::readInternal(void) {
 double Adafruit_MAX31855::readCelsius(void) {
 
   int32_t v;
-
-  Serial.println(v);  
     
   v = spiread32();
 
