@@ -43,8 +43,7 @@
 #include <stdlib.h>
 #include <SPI.h>
 
-Adafruit_MAX31855::Adafruit_MAX31855()
-    : spi_dev(0, 0, 0, 0, 0) {}
+Adafruit_MAX31855::Adafruit_MAX31855(){}
 
 /**************************************************************************/
 /*!
@@ -74,7 +73,7 @@ Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs){}
 */
 /**************************************************************************/
 bool Adafruit_MAX31855::begin(void) {
-  SPI.beginTransaction(1000000, MSBFIRST, SPI_MODE0);
+  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
 }
 
 /**************************************************************************/
