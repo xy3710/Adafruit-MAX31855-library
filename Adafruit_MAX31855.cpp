@@ -41,6 +41,7 @@
 #endif
 
 #include <stdlib.h>
+#include <SPI.h>
 
 Adafruit_MAX31855::Adafruit_MAX31855()
     : spi_dev(0, 0, 0, 0, 0) {}
