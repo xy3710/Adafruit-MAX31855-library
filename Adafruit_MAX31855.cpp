@@ -66,7 +66,8 @@ Adafruit_MAX31855::Adafruit_MAX31855(int8_t _sclk, int8_t _cs, int8_t _miso)
 */
 /**************************************************************************/
 Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs, SPIClass *_spi)
-    : spi_dev(_cs, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, _spi) {}
+    : spi_dev(_cs, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, _spi) {
+    Serial.println(_cs);}
 
 /**************************************************************************/
 /*!
