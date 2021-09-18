@@ -54,8 +54,7 @@ Adafruit_MAX31855::Adafruit_MAX31855()
     @param _miso The pin to use for SPI Master In Slave Out.
 */
 /**************************************************************************/
-Adafruit_MAX31855::Adafruit_MAX31855(int8_t _sclk, int8_t _cs, int8_t _miso)
-    : spi_dev(_cs, _sclk, _miso, -1, 1000000) {}
+Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs){}
 
 /**************************************************************************/
 /*!
@@ -64,9 +63,7 @@ Adafruit_MAX31855::Adafruit_MAX31855(int8_t _sclk, int8_t _cs, int8_t _miso)
     @param _cs The pin to use for SPI Chip Select.
     @param _spi which spi buss to use.
 */
-/**************************************************************************/
-Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs, SPIClass *_spi)
-    : spi_dev(_cs, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, _spi) {}
+
 
 /**************************************************************************/
 /*!
@@ -76,9 +73,7 @@ Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs, SPIClass *_spi)
 */
 /**************************************************************************/
 bool Adafruit_MAX31855::begin(void) {
-  initialized = spi_dev.begin();
-
-  return initialized;
+  SPI.beginTransaction(1000000, MSBFIRST, SPI_MODE0);
 }
 
 /**************************************************************************/
@@ -193,7 +188,7 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
     begin();
   }
 
-  spi_dev.read(buf, 4);
+  SPI.transfer(buf, 4);
 
   d = buf[0];
   d <<= 8;
