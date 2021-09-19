@@ -1,4 +1,4 @@
-/*!
+*!
  * @file Adafruit_MAX31855.cpp
  *
  * @mainpage Adafruit MAX31855 Thermocouple Breakout Driver
@@ -41,51 +41,52 @@
 #endif
 
 #include <stdlib.h>
-#include <SPI.h>
 
-Adafruit_MAX31855::Adafruit_MAX31855(){}
+Adafruit_MAX31855::Adafruit_MAX31855()
+    : spi_dev(0, 0, 0, 0, 0) {}
 
 /**************************************************************************/
 /*!
     @brief  Instantiates a new Adafruit_MAX31855 class using software SPI.
-
     @param _sclk The pin to use for SPI Serial Clock.
     @param _cs The pin to use for SPI Chip Select.
     @param _miso The pin to use for SPI Master In Slave Out.
 */
 /**************************************************************************/
-Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs){}
+Adafruit_MAX31855::Adafruit_MAX31855(int8_t _sclk, int8_t _cs, int8_t _miso)
+    : spi_dev(_cs, _sclk, _miso, -1, 1000000) {}
 
 /**************************************************************************/
 /*!
     @brief  Instantiates a new Adafruit_MAX31855 class using hardware SPI.
-
     @param _cs The pin to use for SPI Chip Select.
     @param _spi which spi buss to use.
 */
-
+/**************************************************************************/
+Adafruit_MAX31855::Adafruit_MAX31855(int8_t _cs, SPIClass *_spi)
+    : spi_dev(_cs, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, _spi) {}
 
 /**************************************************************************/
 /*!
     @brief  Setup the HW
-
     @return True if the device was successfully initialized, otherwise false.
 */
 /**************************************************************************/
 bool Adafruit_MAX31855::begin(void) {
-  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
+  initialized = spi_dev.begin();
+
+  return initialized;
 }
 
 /**************************************************************************/
 /*!
     @brief  Read the internal temperature.
-
     @return The internal temperature in degrees Celsius.
 */
 /**************************************************************************/
 double Adafruit_MAX31855::readInternal(void) {
   uint32_t v;
-  
+
   v = spiread32();
 
   // ignore bottom 4 bits - they're just thermocouple data
@@ -107,17 +108,16 @@ double Adafruit_MAX31855::readInternal(void) {
 /**************************************************************************/
 /*!
     @brief  Read the thermocouple temperature.
-
     @return The thermocouple temperature in degrees Celsius.
 */
 /**************************************************************************/
 double Adafruit_MAX31855::readCelsius(void) {
 
   int32_t v;
-    
+
   v = spiread32();
 
-  //Serial.print("0x"); Serial.println(v, HEX);
+  // Serial.print("0x"); Serial.println(v, HEX);
 
   /*
   float internal = (v >> 4) & 0x7FF;
@@ -151,7 +151,6 @@ double Adafruit_MAX31855::readCelsius(void) {
 /**************************************************************************/
 /*!
     @brief  Read the error state.
-
     @return The error state.
 */
 /**************************************************************************/
@@ -160,7 +159,6 @@ uint8_t Adafruit_MAX31855::readError() { return spiread32() & 0x7; }
 /**************************************************************************/
 /*!
     @brief  Read the thermocouple temperature.
-
     @return The thermocouple temperature in degrees Fahrenheit.
 */
 /**************************************************************************/
@@ -175,20 +173,19 @@ double Adafruit_MAX31855::readFahrenheit(void) {
 /**************************************************************************/
 /*!
     @brief  Read 4 bytes (32 bits) from breakout over SPI.
-
     @return The raw 32 bit value read.
 */
 /**************************************************************************/
 uint32_t Adafruit_MAX31855::spiread32(void) {
   uint32_t d = 0;
   uint8_t buf[4];
-    
+
   // backcompatibility!
   if (!initialized) {
     begin();
   }
 
-  SPI.transfer(buf, 4);
+  spi_dev.read(buf, 4);
 
   d = buf[0];
   d <<= 8;
@@ -198,7 +195,6 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
   d <<= 8;
   d |= buf[3];
 
-  //Serial.println(d, HEX);
+  // Serial.println(d, HEX);
 
   return d;
-}
