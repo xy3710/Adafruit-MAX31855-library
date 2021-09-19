@@ -198,3 +198,4 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
   // Serial.println(d, HEX);
 
   return d;
+}
