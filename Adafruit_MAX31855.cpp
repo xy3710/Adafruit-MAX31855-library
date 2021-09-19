@@ -1,4 +1,4 @@
-*!
+/*!
  * @file Adafruit_MAX31855.cpp
  *
  * @mainpage Adafruit MAX31855 Thermocouple Breakout Driver
